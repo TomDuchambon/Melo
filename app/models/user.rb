@@ -8,12 +8,12 @@ class User < ApplicationRecord
   validates :phone_number, length: { minimum: 8 }
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  has_one :artist
-  has_many :reviews
-  has_many :bookings
-  has_many :users_rooms
+  has_one :artist, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :bookings, dependent: :destroy
+  has_many :users_rooms, dependent: :destroy
   has_many :message_rooms, through: :users_rooms
-  has_many :messages
-  has_many :user_likes
+  has_many :messages, dependent: :destroy
+  has_many :user_likes, dependent: :destroy
   has_one_attached :avatar
 end

@@ -6,12 +6,14 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+
+User.destroy_all
 require 'csv'
 require 'open-uri'
 
 puts "Creating User Artists"
 
-filepath = File.join(Rails.root, 'db', 'users_all.csv')
+filepath = File.join(Rails.root, 'db', 'users.csv')
 
 CSV.foreach(filepath, headers: :first_row) do |row|
   user = User.new(
@@ -23,7 +25,8 @@ CSV.foreach(filepath, headers: :first_row) do |row|
     email: row[5].gsub('“', '').gsub('”', ''),
     location: Faker::Address.full_address,
     role: row[6].gsub('“', '').gsub('”', ''),
-    phone_number: Faker::PhoneNumber.cell_phone
+    phone_number: Faker::PhoneNumber.cell_phone,
+    tag: row["tag"]
   )
   avatar = URI.open(row[7].gsub('“', '').gsub('”', ''))
   user.avatar.attach(io: avatar, filename: "avatar_#{user.id}_1.png", content_type: "image/jpg")
